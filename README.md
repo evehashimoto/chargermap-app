@@ -83,6 +83,4 @@ npx expo start --tunnel
 
 ---
 
-# 👩‍💻 Desenvolvido para
-
-Projeto acadêmico desenvolvido por Evelin Hashimoto e Rebbeca Martins | FIAP 2026
+Projeto acadêmico desenvolvido por Evelin Hashimoto e Rebecca Martins | FIAP 2026
