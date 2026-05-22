@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
 
   map: {
     width: "100%",
-    height: 750,
+    height: 450,
     resizeMode: "cover",
     marginTop: 20,
   },
