@@ -7,12 +7,32 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
 
   const [selectedStation, setSelectedStation] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [postos, setPostos] = useState([]);
+  const [postoSelecionado, setPostoSelecionado] = useState(null);
+
+  useEffect(() => {
+  fetch("https://chargermap-backend.onrender.com/postos")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("POSTOS:", data);
+
+      setPostos(data);
+
+      if (data.length > 0) {
+        setPostoSelecionado(data[0]);
+      }
+    })
+    .catch((error) => {
+      console.log("ERRO API:", error);
+    });
+}, []);
+
 
   // TELA DE FILTROS
   if (showFilters) {
@@ -163,17 +183,16 @@ export default function App() {
         <View style={styles.card}>
 
           <Text style={styles.title}>
-            Estação de Recarga - Nações Unidas
+            {postoSelecionado?.nome}
           </Text>
 
           <Text style={styles.rating}>
-            ⭐⭐⭐⭐⭐ 4,3 (6 avaliações)
+            ⭐⭐⭐⭐⭐ {postoSelecionado?.avaliacao}
           </Text>
 
           <View style={styles.addressRow}>
             <Text style={styles.address}>
-              Av. das Nações Unidas, 648 -
-              Bonfim, Osasco - SP
+              {postoSelecionado?.endereco}
             </Text>
 
             <Text style={styles.distance}>
@@ -183,7 +202,7 @@ export default function App() {
 
           <View style={styles.tag}>
             <Text style={styles.tagText}>
-              2 Pontos de Recarga
+              {postoSelecionado?.disponibilidade}
             </Text>
           </View>
 
@@ -195,7 +214,7 @@ export default function App() {
               </Text>
 
               <Text style={styles.infoValue}>
-                140kW
+                {postoSelecionado?.potencia}
               </Text>
             </View>
 
@@ -205,7 +224,7 @@ export default function App() {
               </Text>
 
               <Text style={styles.infoValue}>
-                CCS
+                {postoSelecionado?.conector}
               </Text>
             </View>
 
@@ -277,7 +296,11 @@ export default function App() {
 
       {/* MAPA */}
       <TouchableOpacity
-        onPress={() => setSelectedStation(true)}
+        onPress={() => {
+  if (postoSelecionado) {
+    setSelectedStation(true);
+  }
+}}
       >
         <Image
           source={require("./assets/map.png")}
