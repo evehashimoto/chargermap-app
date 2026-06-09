@@ -5,9 +5,11 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 
 import { useState, useEffect } from "react";
+import MapView, { Marker } from "react-native-maps";
 
 export default function App() {
 
@@ -15,6 +17,47 @@ export default function App() {
   const [showFilters, setShowFilters] = useState(false);
   const [postos, setPostos] = useState([]);
   const [postoSelecionado, setPostoSelecionado] = useState(null);
+  const [screen, setScreen] = useState("login");
+  const [nome, setNome] = useState("");   
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [usuarioLogado, setUsuarioLogado] = useState({
+    nome: "Evelin"
+  });
+  const [favoritos] = useState([
+  {
+    nome: "EcoCharge Shopping",
+    endereco: "Av. Paulista, 1200"
+  },
+  {
+    nome: "Eletro Station",
+    endereco: "Rua Augusta, 500"
+  }
+]);
+
+const [historico] = useState([
+  {
+    local: "EcoCharge Shopping",
+    data: "05/06/2026"
+  },
+  {
+    local: "Power Station",
+    data: "02/06/2026"
+  }
+]);
+
+const [avaliacoes] = useState([
+  {
+    usuario: "Carlos",
+    nota: 5,
+    comentario: "Posto excelente e rápido."
+  },
+  {
+    usuario: "Marina",
+    nota: 4,
+    comentario: "Funcionou perfeitamente."
+  }
+]);
 
   useEffect(() => {
   fetch("https://chargermap-backend.onrender.com/postos")
@@ -33,6 +76,264 @@ export default function App() {
     });
 }, []);
 
+if (screen === "login") {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#FFFF",
+        padding: 30,
+        justifyContent: "center"
+      }}
+    >
+
+      <Image
+        source={require("./assets/logo 2.png")}
+        style={{
+          width: 180,
+          height: 100,
+          resizeMode: "contain",
+          alignSelf: "center",
+          marginBottom: 50
+        }}
+      />
+
+      <Text
+  style={{
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#555799",
+    marginBottom: 15,
+    textAlign: "center"
+  }}
+>
+  Bem-vindo ao ChargeMap
+</Text>
+
+<Text
+  style={{
+    textAlign: "center",
+    color: "#666",
+    marginBottom: 40
+  }}
+>
+  Faça login para continuar
+</Text>
+
+      <TextInput
+        placeholder="E-mail"
+        value={email}
+        onChangeText={setEmail}
+        style={{
+          borderWidth: 1,
+          borderColor: "#555799",
+          borderRadius: 12,
+          padding: 15,
+          marginBottom: 15
+        }}
+      />
+
+      <TextInput
+        placeholder="Senha"
+        secureTextEntry
+        value={senha}
+        onChangeText={setSenha}
+        style={{
+          borderWidth: 1,
+          borderColor: "#555799",
+          borderRadius: 12,
+          padding: 15,
+          marginBottom: 30
+        }}
+      />
+
+      <Text
+  style={{
+    textAlign: "right",
+    color: "#555799",
+    marginBottom: 20
+  }}
+>
+  Esqueci minha senha
+</Text>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#B947FA",
+          padding: 18,
+          borderRadius: 12
+        }}
+        onPress={() => {
+
+  setUsuarioLogado({
+    nome: nome || "Motorista Flui",
+    email: email
+  });
+
+  setScreen("home");
+
+}}
+      >
+        <Text
+  style={{
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16
+  }}
+>
+  Entrar →
+</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => setScreen("cadastro")}
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 25,
+            color: "#B947FA",
+            fontWeight: "bold"
+          }}
+        >
+          Criar conta
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+if (screen === "cadastro") {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#FFFF",
+        padding: 30,
+        justifyContent: "center"
+      }}
+    >
+
+      <Image
+        source={require("./assets/logo 2.png")}
+        style={{
+          width: 180,
+          height: 100,
+          resizeMode: "contain",
+          alignSelf: "center",
+          marginBottom: 50
+        }}
+      />
+
+      <Text
+        style={{
+          fontSize: 30,
+          fontWeight: "bold",
+          color: "#555799",
+          marginBottom: 40
+        }}
+      >
+        Informe os dados abaixo para criar sua conta.
+      </Text>
+
+      <TextInput
+        placeholder="Nome Completo"
+        value={nome}
+        onChangeText={setNome}
+        style={{
+          borderWidth: 1,
+          borderColor: "#555799",
+          borderRadius: 12,
+          padding: 15,
+          marginBottom: 15
+        }}
+      />
+
+      <TextInput
+  placeholder="CPF"
+  style={{
+    borderWidth: 1,
+    borderColor: "#555799",
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 15
+  }}
+/>
+
+      <TextInput
+        placeholder="E-mail"
+        value={email}
+        onChangeText={setEmail}
+        style={{
+          borderWidth: 1,
+          borderColor: "#555799",
+          borderRadius: 12,
+          padding: 15,
+          marginBottom: 15
+        }}
+      />
+
+      <TextInput
+        placeholder="Senha"
+        secureTextEntry
+        value={senha}
+        onChangeText={setSenha}
+        style={{
+          borderWidth: 1,
+          borderColor: "#555799",
+          borderRadius: 12,
+          padding: 15,
+          marginBottom: 30
+        }}
+      />
+
+      <TextInput
+  placeholder="Confirmar senha"
+  secureTextEntry
+  style={{
+    borderWidth: 1,
+    borderColor: "#555799",
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 30
+  }}
+/>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#B947FA",
+          padding: 18,
+          borderRadius: 12
+        }}
+       onPress={() => {
+
+  setUsuarioLogado({
+    nome,
+    email
+  });
+
+  alert("Conta criada com sucesso!");
+
+  setScreen("home");
+
+}}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            textAlign: "center",
+            fontWeight: "bold"
+          }}
+        >
+          Criar conta
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
 
   // TELA DE FILTROS
   if (showFilters) {
@@ -48,8 +349,8 @@ export default function App() {
           />
 
           <Text style={styles.greeting}>
-            Olá, Usuário!
-          </Text>
+  Olá, {usuarioLogado?.nome || "Usuário"}!
+</Text>
 
           <Text style={styles.subtitle}>
             Encontre postos perto de você.
@@ -78,10 +379,33 @@ export default function App() {
         </View>
 
         {/* MAPA */}
-        <Image
-          source={require("./assets/map.png")}
-          style={styles.map}
-        />
+        <MapView
+  style={styles.map}
+  initialRegion={{
+    latitude: -23.55052,
+    longitude: -46.633308,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  }}
+>
+
+  {postos.map((posto) => (
+    <Marker
+      key={posto._id}
+      coordinate={{
+        latitude: posto.latitude,
+        longitude: posto.longitude,
+      }}
+      title={posto.nome}
+      description={posto.endereco}
+      onPress={() => {
+        setPostoSelecionado(posto);
+        setSelectedStation(true);
+      }}
+    />
+  ))}
+
+</MapView>
 
         {/* CARD FILTROS */}
         <View style={styles.filterCard}>
@@ -136,23 +460,31 @@ export default function App() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Text style={styles.navText}>
-              Favoritos
-            </Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  onPress={() => setScreen("favoritos")}
+>
+  <Text style={styles.navText}>
+    Favoritos
+  </Text>
+</TouchableOpacity>
 
-          <TouchableOpacity>
-            <Text style={styles.navText}>
-              Histórico
-            </Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  onPress={() => setScreen("historico")}
+>
+  <Text style={styles.navText}>
+    Histórico
+  </Text>
+</TouchableOpacity>
 
-          <TouchableOpacity>
-            <Text style={styles.navText}>
-              Perfil
-            </Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  onPress={() => alert(
+    `Usuário: ${usuarioLogado?.nome}\nEmail: ${email}`
+  )}
+>
+  <Text style={styles.navText}>
+    Perfil
+  </Text>
+</TouchableOpacity>
 
         </View>
 
@@ -187,7 +519,7 @@ export default function App() {
           </Text>
 
           <Text style={styles.rating}>
-            ⭐⭐⭐⭐⭐ {postoSelecionado?.avaliacao}
+            ⭐⭐⭐⭐ {postoSelecionado?.avaliacao}
           </Text>
 
           <View style={styles.addressRow}>
@@ -240,7 +572,42 @@ export default function App() {
 
           </View>
 
-          <TouchableOpacity style={styles.routeButton}>
+          <Text style={{
+  fontSize: 20,
+  fontWeight: "bold",
+  marginTop: 25,
+  color: "#555799"
+}}>
+  Avaliações
+</Text>
+
+<View style={{
+  marginTop: 15,
+  backgroundColor: "#F5F5F5",
+  padding: 15,
+  borderRadius: 12
+}}>
+  <Text>⭐⭐⭐⭐⭐ Excelente localização.</Text>
+</View>
+
+<View style={{
+  marginTop: 10,
+  backgroundColor: "#F5F5F5",
+  padding: 15,
+  borderRadius: 12
+}}>
+  <Text>⭐⭐⭐⭐ Carregador rápido.</Text>
+</View>
+
+          <TouchableOpacity
+  style={styles.routeButton}
+  onPress={() =>
+    Linking.openURL(
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(postoSelecionado?.endereco || "")
+    )
+  }
+>
             <Text style={styles.routeText}>
               Iniciar rota
             </Text>
@@ -252,8 +619,463 @@ export default function App() {
     );
   }
 
-  // HOME
+  if (screen === "perfil") {
   return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: 80,
+        paddingHorizontal: 25
+      }}
+    >
+
+      <View
+        style={{
+          alignItems: "center"
+        }}
+      >
+
+        <View
+          style={{
+            width: 120,
+            height: 120,
+            borderRadius: 60,
+            backgroundColor: "#B947FA",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 42,
+              color: "#fff",
+              fontWeight: "bold"
+            }}
+          >
+            E
+          </Text>
+        </View>
+
+        <Text
+          style={{
+            marginTop: 20,
+            fontSize: 28,
+            fontWeight: "bold",
+            color: "#555799"
+          }}
+        >
+          {usuarioLogado?.nome || "Motorista Flui"}
+        </Text>
+
+        <Text
+          style={{
+            marginTop: 8,
+            color: "#777"
+          }}
+        >
+          {usuarioLogado?.email}
+        </Text>
+
+      </View>
+
+      <View
+        style={{
+          marginTop: 40
+        }}
+      >
+
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+          <Text
+            style={{
+              color: "#777"
+            }}
+          >
+            Postos Favoritos
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: "bold",
+              color: "#555799"
+            }}
+          >
+            8
+          </Text>
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+          <Text
+            style={{
+              color: "#777"
+            }}
+          >
+            Recargas Realizadas
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: "bold",
+              color: "#555799"
+            }}
+          >
+            24
+          </Text>
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+          <Text
+            style={{
+              color: "#777"
+            }}
+          >
+            Avaliações Feitas
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: "bold",
+              color: "#555799"
+            }}
+          >
+            12
+          </Text>
+        </View>
+
+      </View>
+
+      <TouchableOpacity
+        style={{
+          marginTop: "auto",
+          marginBottom: 20,
+          backgroundColor: "#B947FA",
+          height: 60,
+          borderRadius: 15,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        onPress={() => setScreen("home")}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: 18
+          }}
+        >
+          Voltar
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{
+          marginBottom: 40,
+          backgroundColor: "#dc3545",
+          height: 60,
+          borderRadius: 15,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        onPress={() => {
+          setScreen("login");
+        }}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: 18
+          }}
+        >
+          Sair
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+if (screen === "favoritos") {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: 80,
+        paddingHorizontal: 25
+      }}
+    >
+
+      <Text
+        style={{
+          fontSize: 32,
+          fontWeight: "bold",
+          color: "#555799",
+          marginBottom: 30
+        }}
+      >
+        Favoritos
+      </Text>
+
+      {favoritos.map((posto, index) => (
+        <View
+          key={index}
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "#555799"
+            }}
+          >
+            ⭐ {posto.nome}
+          </Text>
+
+          <Text
+            style={{
+              color: "#666",
+              marginTop: 5
+            }}
+          >
+            {posto.endereco}
+          </Text>
+        </View>
+      ))}
+
+      <TouchableOpacity
+        style={{
+          marginTop: "auto",
+          marginBottom: 40,
+          backgroundColor: "#B947FA",
+          height: 60,
+          borderRadius: 15,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        onPress={() => setScreen("home")}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold"
+          }}
+        >
+          Voltar
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+if (screen === "historico") {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: 80,
+        paddingHorizontal: 25
+      }}
+    >
+
+      <Text
+        style={{
+          fontSize: 32,
+          fontWeight: "bold",
+          color: "#555799",
+          marginBottom: 30
+        }}
+      >
+        Histórico
+      </Text>
+
+      {historico.map((item, index) => (
+        <View
+          key={index}
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "#555799"
+            }}
+          >
+            ⚡ {item.local}
+          </Text>
+
+          <Text
+            style={{
+              color: "#666",
+              marginTop: 5
+            }}
+          >
+            Recarga realizada em {item.data}
+          </Text>
+        </View>
+      ))}
+
+      <TouchableOpacity
+        style={{
+          marginTop: "auto",
+          marginBottom: 40,
+          backgroundColor: "#B947FA",
+          height: 60,
+          borderRadius: 15,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        onPress={() => setScreen("home")}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold"
+          }}
+        >
+          Voltar
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+if (screen === "avaliacoes") {
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: 80,
+        paddingHorizontal: 25
+      }}
+    >
+
+      <Text
+        style={{
+          fontSize: 32,
+          fontWeight: "bold",
+          color: "#555799",
+          marginBottom: 30
+        }}
+      >
+        Avaliações
+      </Text>
+
+      {avaliacoes.map((item, index) => (
+        <View
+          key={index}
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 15,
+            padding: 20,
+            marginBottom: 15,
+            elevation: 3
+          }}
+        >
+
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: "#555799",
+              fontSize: 18
+            }}
+          >
+            {item.usuario}
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 5,
+              color: "#B947FA"
+            }}
+          >
+            {"⭐".repeat(item.nota)}
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 10,
+              color: "#666"
+            }}
+          >
+            {item.comentario}
+          </Text>
+
+        </View>
+      ))}
+
+      <TouchableOpacity
+        style={{
+          marginTop: "auto",
+          marginBottom: 40,
+          backgroundColor: "#B947FA",
+          height: 60,
+          borderRadius: 15,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        onPress={() => setScreen("home")}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontWeight: "bold"
+          }}
+        >
+          Voltar
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+  // HOME
+  if (screen === "home")
+return (
     <View style={styles.container}>
 
       {/* HEADER */}
@@ -265,8 +1087,8 @@ export default function App() {
         />
 
         <Text style={styles.greeting}>
-          Olá, Usuário!
-        </Text>
+  Olá, {usuarioLogado?.nome || "Motorista"}!
+</Text>
 
         <Text style={styles.subtitle}>
           Encontre postos perto de você.
@@ -295,18 +1117,31 @@ export default function App() {
       </View>
 
       {/* MAPA */}
-      <TouchableOpacity
-        onPress={() => {
-  if (postoSelecionado) {
-    setSelectedStation(true);
-  }
-}}
-      >
-        <Image
-          source={require("./assets/map.png")}
-          style={styles.map}
-        />
-      </TouchableOpacity>
+      <MapView
+  style={styles.map}
+  initialRegion={{
+    latitude: -23.532,
+    longitude: -46.791,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  }}
+>
+  {postos.map((posto) => (
+    <Marker
+      key={posto._id}
+      coordinate={{
+        latitude: posto.latitude,
+        longitude: posto.longitude,
+      }}
+      title={posto.nome}
+      description={posto.endereco}
+      onPress={() => {
+        setPostoSelecionado(posto);
+        setSelectedStation(true);
+      }}
+    />
+  ))}
+</MapView>
 
       {/* NAVBAR */}
       <View style={styles.navbar}>
@@ -317,23 +1152,29 @@ export default function App() {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
-          <Text style={styles.navText}>
-            Favoritos
-          </Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+  onPress={() => setScreen("favoritos")}
+>
+  <Text style={styles.navText}>
+    Favoritos
+  </Text>
+</TouchableOpacity>
 
-        <TouchableOpacity>
-          <Text style={styles.navText}>
-            Histórico
-          </Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+  onPress={() => setScreen("historico")}
+>
+  <Text style={styles.navText}>
+    Histórico
+  </Text>
+</TouchableOpacity>
 
-        <TouchableOpacity>
-          <Text style={styles.navText}>
-            Perfil
-          </Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+  onPress={() => setScreen("perfil")}
+>
+  <Text style={styles.navText}>
+    Perfil
+  </Text>
+</TouchableOpacity>
 
       </View>
 
