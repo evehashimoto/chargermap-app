@@ -103,21 +103,11 @@ if (screen === "login") {
     fontSize: 30,
     fontWeight: "bold",
     color: "#555799",
-    marginBottom: 15,
-    textAlign: "center"
+    marginBottom: 40,
+    textAlign: "left"
   }}
 >
-  Bem-vindo ao ChargeMap
-</Text>
-
-<Text
-  style={{
-    textAlign: "center",
-    color: "#666",
-    marginBottom: 40
-  }}
->
-  Faça login para continuar
+  Encontre o melhor posto de carregamento em poucos clicks!
 </Text>
 
       <TextInput
@@ -165,14 +155,25 @@ if (screen === "login") {
         }}
         onPress={() => {
 
+  if (!email || !senha) {
+
+    Alert.alert(
+      "Atenção",
+      "Preencha e-mail e senha."
+    );
+
+    return;
+  }
+
   setUsuarioLogado({
-    nome: nome || "Motorista Flui",
-    email: email
+    nome: "Motorista Flui",
+    email
   });
 
   setScreen("home");
 
 }}
+
       >
         <Text
   style={{
@@ -184,21 +185,6 @@ if (screen === "login") {
 >
   Entrar →
 </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => setScreen("cadastro")}
-      >
-        <Text
-          style={{
-            textAlign: "center",
-            marginTop: 25,
-            color: "#B947FA",
-            fontWeight: "bold"
-          }}
-        >
-          Criar conta
-        </Text>
       </TouchableOpacity>
 
     </View>
@@ -307,18 +293,10 @@ if (screen === "cadastro") {
           padding: 18,
           borderRadius: 12
         }}
-       onPress={() => {
-
-  setUsuarioLogado({
-    nome,
-    email
-  });
-
-  alert("Conta criada com sucesso!");
-
-  setScreen("home");
-
+      
+        onPress={() => {
 }}
+
       >
         <Text
           style={{
