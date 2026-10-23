@@ -1,15 +1,15 @@
 export const API_URL = "https://chargermap-backend.onrender.com/postos";
 
 // Ponto de referência (centro do mapa) usado para calcular as distâncias.
-export const REF = { latitude: -23.532, longitude: -46.791 };
+export const REF = { latitude: -23.539140064799508, longitude: -46.73418015901779 };
 
 // Usado só se a API não responder (ex.: servidor "dormindo" ou sem internet).
 export const POSTOS_DEMO = [
-  { _id: "demo1", nome: "EcoCharge Shopping", endereco: "Av. dos Autonomistas, 1500", potencia: "150 kW", conector: "CCS", disponibilidade: "Disponível", avaliacao: 4.8, latitude: -23.5335, longitude: -46.7905 },
-  { _id: "demo2", nome: "Eletro Station", endereco: "Rua Antônio Agu, 300", potencia: "50 kW", conector: "Tipo 2", disponibilidade: "Disponível", avaliacao: 4.5, latitude: -23.5298, longitude: -46.7842 },
-  { _id: "demo3", nome: "Power Station", endereco: "Av. Presidente Médici, 800", potencia: "100 kW", conector: "CHAdeMO", disponibilidade: "Ocupado", avaliacao: 4.2, latitude: -23.5372, longitude: -46.7968 },
-  { _id: "demo4", nome: "VoltPoint Osasco", endereco: "Rua Primitiva Vianco, 450", potencia: "150 kW", conector: "CCS", disponibilidade: "Disponível", avaliacao: 4.9, latitude: -23.5251, longitude: -46.7921 },
-  { _id: "demo5", nome: "Recarga Plus", endereco: "Av. Jules Rimet, 120", potencia: "50 kW", conector: "Tipo 2", disponibilidade: "Disponível", avaliacao: 4.0, latitude: -23.5409, longitude: -46.7823 },
+  { _id: "demo1", nome: "Estação Leopoldina", cidade: "São Paulo", endereco: "Av. Manuel Bandeira", potencia: "150 kW", conector: "CCS", disponibilidade: "Disponível", avaliacao: 4.8, latitude: -23.5380622, longitude: -46.7332983 },
+  { _id: "demo2", nome: "Eletroposto Imperatriz", cidade: "São Paulo", endereco: "Av. Imperatriz Leopoldina", potencia: "50 kW", conector: "Tipo 2", disponibilidade: "Disponível", avaliacao: 4.3, latitude: -23.5425537, longitude: -46.7297710 },
+  { _id: "demo3", nome: "Recarga Carlos Weber", cidade: "São Paulo", endereco: "Rua Carlos Weber", potencia: "100 kW", conector: "CHAdeMO", disponibilidade: "Indisponível", avaliacao: 4.1, latitude: -23.5333011, longitude: -46.7371197 },
+  { _id: "demo4", nome: "Estação Mofarrej", cidade: "São Paulo", endereco: "Av. Mofarrej", potencia: "120 kW", conector: "CCS", disponibilidade: "Disponível", avaliacao: 4.6, latitude: -23.5472249, longitude: -46.7410390 },
+  { _id: "demo5", nome: "Ponto Gastão Vidigal", cidade: "São Paulo", endereco: "Av. Gastão Vidigal", potencia: "22 kW", conector: "Tipo 2", disponibilidade: "Disponível", avaliacao: 4.2, latitude: -23.5256654, longitude: -46.7224221 },
 ];
 
 export const AVALIACOES_POSTO = [
